@@ -1,57 +1,17 @@
 import { useState, useEffect} from 'react';
-
-// Navbar component
-function NavBar() {
-  return (
-    <nav>
-      <div>
-        <h1 className="logo">Notes</h1>
-      </div>
-      <ul className="nav-links">
-        <li>
-          Home
-        </li>
-        <li>
-          About
-        </li>
-        <li>
-          Contact
-        </li>
-        <li>
-          Login
-        </li>
-      </ul>
-    </nav>
-  );
-}
-
-
-// Note component, using props to individualize each note.
-function Note({ content }: {content: string}) {
-  const [clicked, setClicked] = useState(false)
-
-
-  function handleClick() {
-    setClicked(!clicked)
-  }
-
-  return (
-    <div className="note" onClick={handleClick}>
-      {!clicked? <h1>Click to show</h1> : <p>{content}</p>}
-    </div>
-  );
-}
+import NavBar from './NavBar'
+import Note from './note'
 
 function App() {
-  const [todonotes, setTodonotes] = useState([""])
+  const [todonotes, setTodonotes] = useState<string []>([])
 
   async function getNotes() {
     const response  = await fetch("http://localhost:8000/notes")
     const data: {notes: string []} = await response.json()
     setTodonotes(data['notes'])
-  
   }
   
+  // This will run during the initial render, just to display the notes at the start
   useEffect( () => {
     getNotes()
   }
